@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>thangp06's contribution graph</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #070b14;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #e6edf3;
+    }
+    .card {
+      width: min(960px, calc(100vw - 32px));
+      background: #0e1628;
+      border: 1px solid #1f2a3d;
+      border-radius: 16px;
+      padding: 20px 20px 16px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    h1 { margin: 0; font-size: 18px; font-weight: 600; }
+    .status { color: #8b9cb3; font-size: 13px; }
+    .subtitle { margin: 10px 0 8px; text-align: center; color: #9fb0c6; font-size: 13px; }
+    canvas { width: 100%; height: 320px; display: block; }
+    .controls { display: flex; justify-content: center; gap: 12px; margin-top: 8px; }
+    button {
+      background: #132033;
+      color: #e6edf3;
+      border: 1px solid #2a3b55;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.35; cursor: default; }
+    button:not(:disabled):hover { background: #1b2c48; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <h1>Contribution</h1>
+      <div class="status" id="status">Loading real contributions…</div>
+    </header>
+    <div class="subtitle">thangp06's contribution graph</div>
+    <canvas id="chart" width="920" height="320"></canvas>
+    <div class="controls">
+      <button id="prev" type="button" aria-label="Show earlier contributions">←</button>
+      <button id="next" type="button" aria-label="Show later contributions">→</button>
+    </div>
+  </div>
+  <script>
+    const USER = "thangp06";
+    const WINDOW_DAYS = 120;
+    const STEP_DAYS = 30;
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+    const statusEl = document.getElementById("status");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+
+    let days = [];
+    let offset = 0;
+
+    function range() {
+      const end = Math.max(0, days.length - offset);
+      const start = Math.max(0, end - WINDOW_DAYS);
+      return days.slice(start, end);
+    }
+
+    function updateButtons() {
+      const end = days.length - offset;
+      prevBtn.disabled = end - WINDOW_DAYS <= 0;
+      nextBtn.disabled = offset <= 0;
+    }
+
+    function draw() {
+      const slice = range();
+      const dpr = window.devicePixelRatio || 1;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+
+      const pl = 58, pr = 16, pt = 16, pb = 36;
+      const plotW = width - pl - pr;
+      const plotH = height - pt - pb;
+      const max = Math.max(4, ...slice.map((d) => d.count), 0);
+
+      ctx.strokeStyle = "#243044";
+      ctx.fillStyle = "#8b9cb3";
+      ctx.font = "12px Segoe UI, Arial, sans-serif";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let t = 0; t <= 4; t++) {
+        const val = Math.round(max * t / 4);
+        const y = pt + plotH - (val / max) * plotH;
+        ctx.beginPath();
+        ctx.moveTo(pl, y);
+        ctx.lineTo(pl + plotW, y);
+        ctx.stroke();
+        ctx.fillText(String(val), pl - 8, y);
+      }
+
+      ctx.save();
+      ctx.translate(16, pt + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = "center";
+      ctx.fillText("Contributions", 0, 0);
+      ctx.restore();
+
+      if (slice.length > 1) {
+        const xAt = (i) => pl + (i / (slice.length - 1)) * plotW;
+        const yAt = (c) => pt + plotH - (c / max) * plotH;
+        const grad = ctx.createLinearGradient(0, pt, 0, pt + plotH);
+        grad.addColorStop(0, "rgba(61, 183, 255, 0.45)");
+        grad.addColorStop(1, "rgba(61, 183, 255, 0.02)");
+        ctx.beginPath();
+        ctx.moveTo(xAt(0), yAt(0));
+        slice.forEach((d, i) => ctx.lineTo(xAt(i), yAt(d.count)));
+        ctx.lineTo(xAt(slice.length - 1), yAt(0));
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.beginPath();
+        slice.forEach((d, i) => {
+          const x = xAt(i);
+          const y = yAt(d.count);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = "#4cc3ff";
+        ctx.lineWidth = 2.2;
+        ctx.lineJoin = "round";
+        ctx.stroke();
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#8b9cb3";
+        let lastLabel = "";
+        slice.forEach((d, i) => {
+          const date = new Date(d.date + "T00:00:00");
+          const label = date.toLocaleString("en-US", { month: "short" });
+          const show = label !== lastLabel && (date.getMonth() % 2 === 0 || i === 0);
+          if (!show) return;
+          lastLabel = label;
+          ctx.fillText(label, xAt(i), height - 14);
+        });
+      }
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#8b9cb3";
+      ctx.fillText("Time", pl + plotW / 2, height - 1);
+      updateButtons();
+    }
+
+    async function load() {
+      const res = await fetch(
+        "https://github-contributions-api.jogruber.de/v4/" + USER + "?y=last",
+        { cache: "no-store" }
+      );
+      if (!res.ok) throw new Error("Contribution data returned " + res.status);
+      const json = await res.json();
+      days = json.contributions || [];
+      const total = json.total && json.total.lastYear;
+      const stamp = new Date().toLocaleTimeString();
+      statusEl.textContent = (total != null ? total + " contributions this year · " : "") + "Updated " + stamp;
+      draw();
+    }
+
+    prevBtn.addEventListener("click", () => {
+      const maxOffset = Math.max(0, days.length - WINDOW_DAYS);
+      offset = Math.min(maxOffset, offset + STEP_DAYS);
+      draw();
+    });
+    nextBtn.addEventListener("click", () => {
+      offset = Math.max(0, offset - STEP_DAYS);
+      draw();
+    });
+    window.addEventListener("resize", draw);
+    load().catch((err) => { statusEl.textContent = err.message; });
+    setInterval(() => {
+      load().catch((err) => { statusEl.textContent = err.message; });
+    }, 30000);
+  </script>
+</body>
+</html>
