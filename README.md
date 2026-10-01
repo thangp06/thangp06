@@ -67,9 +67,6 @@
   </a>
 </p>
 
-<p>
-  <a href="https://thangp06.github.io/thangp06/">Open the live chart</a> to move left and right through your history. It reloads your real GitHub contributions every 30 seconds. Profile READMEs cannot run those controls inline, so they live on that page.
-</p>
 
 ---
 
