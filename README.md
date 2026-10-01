@@ -62,7 +62,7 @@
 ### 📈 Contribution Graph
 
 <p>
-  <img src="https://ghchart.rshah.org/58a6ff/thangp06" alt="Contribution graph" />
+  <img src="./contribution.svg" alt="thangp06's contribution graph" />
 </p>
 
 ---
