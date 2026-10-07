@@ -88,9 +88,6 @@
 
 <table>
   <tr>
-    <td width="38%" valign="top">
-      <img src="./about.png" alt="Thang Pham" width="280" />
-    </td>
     <td valign="top"><h4>
       Software Engineering student at Georgia Gwinnett College (B.S. Information Technology, Software Development, 2023–2027) with hands-on experience building Java applications and relational database systems in team environments. Skilled in object-oriented programming, SQL, and Agile and Waterfall methodologies, with a consistent track record of delivering well-structured, maintainable code. Seeking a software developer role where I can contribute technical depth and a strong collaborative work ethic.
     </h4></td>
