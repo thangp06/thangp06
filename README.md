@@ -1,9 +1,4 @@
-<h1 align="center">Hi 👋 I'm Thang Pham</h1>
-<h3 align="center">Software Engineering Student • Java, React & Databases</h3>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Open%20Source-000000?style=for-the-badge" alt="Open Source" />
-</p>
+<p align="center"> <img src="now-playing.svg" alt="Now playing: Hi, I'm Thang Pham" width="520" /> </p> <h3 align="center">Software Engineering Student • Java, React & Databases</h3> <p align="center"> <img src="https://img.shields.io/badge/Open%20Source-000000?style=for-the-badge" alt="Open Source" /> </p>
 
 ---
 
