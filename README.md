@@ -1,6 +1,17 @@
 <p align="center"> <img src="now-playing.svg" alt="Now playing: Hi, I'm Thang Pham" width="520" /> </p> <h3 align="center">Software Engineering Student • Java, React & Databases</h3> <p align="center"> <img src="https://img.shields.io/badge/Open%20Source-000000?style=for-the-badge" alt="Open Source" /> </p>
 
 ---
+### About Me
+
+<table>
+  <tr>
+    <td valign="top"><h4>
+      Software Engineering student at Georgia Gwinnett College (B.S. Information Technology, Software Development, 2023–2027) with hands-on experience building Java applications and relational database systems in team environments. Skilled in object-oriented programming, SQL, and Agile and Waterfall methodologies, with a consistent track record of delivering well-structured, maintainable code. Seeking a software developer role where I can contribute technical depth and a strong collaborative work ethic.
+    </h4></td>
+  </tr>
+</table>
+
+---
 
 ### 🌐 Connect with Me
 
@@ -76,18 +87,6 @@
   <img height="165" src="https://github-readme-stats.vercel.app/api?username=thangp06&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=true" alt="Thang's GitHub stats" />
   <img height="165" src="https://github-readme-streak-stats.herokuapp.com/?user=thangp06&theme=tokyonight&hide_border=true" alt="GitHub streak" />
 </p>
-
----
-
-### About Me
-
-<table>
-  <tr>
-    <td valign="top"><h4>
-      Software Engineering student at Georgia Gwinnett College (B.S. Information Technology, Software Development, 2023–2027) with hands-on experience building Java applications and relational database systems in team environments. Skilled in object-oriented programming, SQL, and Agile and Waterfall methodologies, with a consistent track record of delivering well-structured, maintainable code. Seeking a software developer role where I can contribute technical depth and a strong collaborative work ethic.
-    </h4></td>
-  </tr>
-</table>
 
 ---
 
